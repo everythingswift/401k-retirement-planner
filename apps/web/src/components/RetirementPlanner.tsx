@@ -3,7 +3,11 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   ResponsiveContainer, AreaChart, Area, ReferenceLine,
 } from "recharts";
-import type { TooltipProps } from "recharts";
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{ name: string; value: number; color: string }>;
+  label?: number;
+}
 
 const fmt = (n: number) =>
   n >= 1_000_000
@@ -193,13 +197,13 @@ export default function RetirementPlanner() {
     transition: "all 0.2s",
   });
 
-  const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
+  const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
     if (!active || !payload?.length) return null;
     return (
       <div style={{ background: "#1a1f2e", border: "1px solid rgba(240,192,64,0.3)", borderRadius: 8, padding: "10px 14px", fontFamily: "'DM Mono', monospace", fontSize: 11 }}>
         <div style={{ color: "#f0c040", marginBottom: 6 }}>Age {label} · {2025 + yearsToRetire + ((label as number) - retireAge)}</div>
-        {payload.map((p) => (
-          <div key={p.name} style={{ color: p.color, marginBottom: 2 }}>{p.name}: {fmt(p.value ?? 0)}</div>
+        {payload.map((p: { name: string; value: number; color: string }) => (
+          <div key={p.name} style={{ color: p.color, marginBottom: 2 }}>{p.name}: {fmt(p.value)}</div>
         ))}
       </div>
     );
