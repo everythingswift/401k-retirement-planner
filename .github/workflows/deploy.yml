@@ -36,9 +36,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Approve esbuild build script (required by Vite)
-        run: pnpm approve-builds --all
-
       - name: Build
         run: pnpm build
         env:
