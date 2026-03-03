@@ -1,16 +1,29 @@
 import { useState, useMemo } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area, ReferenceLine } from "recharts";
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  ResponsiveContainer, AreaChart, Area, ReferenceLine,
+} from "recharts";
+import type { TooltipProps } from "recharts";
 
-const fmt = (n) =>
+const fmt = (n: number) =>
   n >= 1_000_000
     ? `${(n / 1_000_000).toFixed(2)}M`
     : n >= 1_000
     ? `${(n / 1_000).toFixed(0)}K`
     : `${Math.round(n).toLocaleString()}`;
 
-const fmtFull = (n) => `${Math.round(n).toLocaleString()}`;
+interface SliderProps {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  onChange: (v: number) => void;
+  format?: (v: number) => string;
+  note?: string;
+}
 
-function Slider({ label, value, min, max, step, onChange, format, note }) {
+function Slider({ label, value, min, max, step, onChange, format, note }: SliderProps) {
   return (
     <div style={{ marginBottom: 18 }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
@@ -27,7 +40,15 @@ function Slider({ label, value, min, max, step, onChange, format, note }) {
   );
 }
 
-function StatCard({ label, value, sub, color = "#f0c040", big }) {
+interface StatCardProps {
+  label: string;
+  value: string;
+  sub?: string;
+  color?: string;
+  big?: boolean;
+}
+
+function StatCard({ label, value, sub, color = "#f0c040", big }: StatCardProps) {
   return (
     <div style={{
       background: "rgba(255,255,255,0.03)",
@@ -44,47 +65,58 @@ function StatCard({ label, value, sub, color = "#f0c040", big }) {
   );
 }
 
+interface ProjectionRow {
+  yr: number;
+  age: number;
+  calYear: number;
+  bonds: number;
+  equity: number;
+  cash: number;
+  total: number;
+  totalReturn: number;
+  spend: number;
+  rental: number;
+  ss: number;
+  totalIncome: number;
+  gap: number;
+  bondGain: number;
+  equityGain: number;
+}
+
 export default function RetirementPlanner() {
-  // Core levers
   const [retireAge, setRetireAge] = useState(58);
   const [currentAge, setCurrentAge] = useState(50);
   const [principal, setPrincipal] = useState(4_000_000);
   const [cashReserve, setCashReserve] = useState(500_000);
   const [cashReserveYears, setCashReserveYears] = useState(5);
 
-  // Income
   const [rentalIncome, setRentalIncome] = useState(30_000);
   const [socialSecurityAge, setSocialSecurityAge] = useState(67);
-  const [socialSecurityAmt, setSocialSecurityAmt] = useState(28_000); // annual
+  const [socialSecurityAmt, setSocialSecurityAmt] = useState(28_000);
   const [annualSpend, setAnnualSpend] = useState(130_000);
 
-  // Fixed vs variable costs
-  const [fixedCosts, setFixedCosts] = useState(80_000); // incl property tax
-  const [propertyTax, setPropertyTax] = useState(14_000);
+  const [fixedCosts, setFixedCosts] = useState(80_000);
+  const [propertyTax] = useState(14_000);
 
-  // Investments
-  const [bondPct, setBondPct] = useState(37.5); // % of investable (after cash reserve)
+  const [bondPct, setBondPct] = useState(37.5);
   const [bondReturn, setBondReturn] = useState(5.0);
   const [equityReturn, setEquityReturn] = useState(8.0);
-  const [equityFlatYears, setEquityFlatYears] = useState(1); // flat years per 5yr cycle
+  const [equityFlatYears, setEquityFlatYears] = useState(1);
   const [inflationRate, setInflationRate] = useState(3.0);
 
-  // Tabs
   const [tab, setTab] = useState("overview");
 
   const investable = principal - cashReserve;
   const bondAmt = (bondPct / 100) * investable;
   const equityAmt = investable - bondAmt;
-  const variableCosts = annualSpend - fixedCosts;
   const yearsToRetire = Math.max(0, retireAge - currentAge);
-  const projectionYears = 25; // project 25 years post-retirement
+  const projectionYears = 25;
 
-  // Year-by-year projection
-  const projection = useMemo(() => {
+  const projection = useMemo<ProjectionRow[]>(() => {
     let bonds = bondAmt;
     let equity = equityAmt;
     let cash = cashReserve;
-    let rows = [];
+    const rows: ProjectionRow[] = [];
 
     for (let yr = 0; yr <= projectionYears; yr++) {
       const calYear = 2025 + yearsToRetire + yr;
@@ -94,34 +126,27 @@ export default function RetirementPlanner() {
       const rental = rentalIncome * inflFactor;
       const ss = age >= socialSecurityAge ? socialSecurityAmt * inflFactor : 0;
       const totalIncome = rental + ss;
-      const gap = spend - totalIncome; // how much to pull from investments
+      const gap = spend - totalIncome;
 
-      // Bond returns
       const bondGain = bonds * (bondReturn / 100);
-      // Equity returns (flat on equityFlatYears of 5)
       const cyclePos = yr % 5;
       const eqRate = cyclePos < (5 - equityFlatYears) ? equityReturn / 100 : 0;
       const equityGain = equity * eqRate;
-
       const totalReturn = bondGain + equityGain;
-      const totalPortfolio = bonds + equity + cash;
 
-      // Withdraw gap from cash first, then bonds, then equity
       let gapLeft = Math.max(0, gap);
-      let cashWithdraw = Math.min(cash, gapLeft);
+      const cashWithdraw = Math.min(cash, gapLeft);
       cash -= cashWithdraw;
       gapLeft -= cashWithdraw;
-      let bondWithdraw = Math.min(bonds, gapLeft);
+      const bondWithdraw = Math.min(bonds, gapLeft);
       bonds -= bondWithdraw;
       gapLeft -= bondWithdraw;
-      let equityWithdraw = Math.min(equity, gapLeft);
+      const equityWithdraw = Math.min(equity, gapLeft);
       equity -= equityWithdraw;
 
-      // Add gains
       bonds += bondGain;
       equity += equityGain;
 
-      // Refill cash if depleted and we have 2+ yrs left of reserve
       if (cash < annualSpend && bonds + equity > 0) {
         const refill = Math.min(annualSpend * 2 - cash, bonds * 0.05);
         bonds -= refill;
@@ -129,21 +154,14 @@ export default function RetirementPlanner() {
       }
 
       rows.push({
-        yr,
-        age,
-        calYear,
+        yr, age, calYear,
         bonds: Math.max(0, bonds),
         equity: Math.max(0, equity),
         cash: Math.max(0, cash),
         total: Math.max(0, bonds + equity + cash),
-        totalReturn,
-        spend,
-        rental,
-        ss,
-        totalIncome,
+        totalReturn, spend, rental, ss, totalIncome,
         gap: Math.max(0, gap),
-        bondGain,
-        equityGain,
+        bondGain, equityGain,
       });
     }
     return rows;
@@ -151,50 +169,44 @@ export default function RetirementPlanner() {
     bondAmt, equityAmt, cashReserve, annualSpend, rentalIncome,
     socialSecurityAge, socialSecurityAmt, inflationRate,
     bondReturn, equityReturn, equityFlatYears, projectionYears,
-    retireAge, yearsToRetire
+    retireAge, yearsToRetire,
   ]);
 
-  const yr5 = projection[5] || projection[projection.length - 1];
-  const yr20 = projection[20] || projection[projection.length - 1];
-  const endPortfolio = projection[projection.length - 1]?.total || 0;
+  const yr5 = projection[5] ?? projection[projection.length - 1];
+  const yr20 = projection[20] ?? projection[projection.length - 1];
+  const endPortfolio = projection[projection.length - 1]?.total ?? 0;
   const annualInvestReturn = bondAmt * (bondReturn / 100) + equityAmt * (equityReturn / 100);
   const netCashflow = annualInvestReturn + rentalIncome - annualSpend;
 
-  const tabStyle = (t) => ({
+  const tabStyle = (t: string) => ({
     padding: "8px 18px",
     borderRadius: 8,
     border: "none",
     cursor: "pointer",
     fontSize: 12,
     fontFamily: "'DM Mono', monospace",
-    textTransform: "uppercase",
+    textTransform: "uppercase" as const,
     letterSpacing: "0.08em",
     fontWeight: 600,
     background: tab === t ? "#f0c040" : "rgba(255,255,255,0.05)",
     color: tab === t ? "#0f0f0f" : "#64748b",
-    transition: "all 0.2s"
+    transition: "all 0.2s",
   });
 
-  const CustomTooltip = ({ active, payload, label }) => {
+  const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
     if (!active || !payload?.length) return null;
     return (
       <div style={{ background: "#1a1f2e", border: "1px solid rgba(240,192,64,0.3)", borderRadius: 8, padding: "10px 14px", fontFamily: "'DM Mono', monospace", fontSize: 11 }}>
-        <div style={{ color: "#f0c040", marginBottom: 6 }}>Age {label} · {2025 + yearsToRetire + (label - retireAge)}</div>
+        <div style={{ color: "#f0c040", marginBottom: 6 }}>Age {label} · {2025 + yearsToRetire + ((label as number) - retireAge)}</div>
         {payload.map((p) => (
-          <div key={p.name} style={{ color: p.color, marginBottom: 2 }}>{p.name}: {fmt(p.value)}</div>
+          <div key={p.name} style={{ color: p.color, marginBottom: 2 }}>{p.name}: {fmt(p.value ?? 0)}</div>
         ))}
       </div>
     );
   };
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      background: "#0a0d14",
-      color: "#e2e8f0",
-      fontFamily: "'Crimson Pro', Georgia, serif",
-      padding: "0 0 60px"
-    }}>
+    <div style={{ minHeight: "100vh", background: "#0a0d14", color: "#e2e8f0", fontFamily: "'Crimson Pro', Georgia, serif", padding: "0 0 60px" }}>
       {/* Header */}
       <div style={{ background: "linear-gradient(135deg, #0f1623 0%, #141b2d 100%)", borderBottom: "1px solid rgba(240,192,64,0.15)", padding: "28px 40px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
@@ -212,11 +224,11 @@ export default function RetirementPlanner() {
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 40px 0" }}>
         {/* Key Stats Row */}
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 32 }}>
-          <StatCard label="Investable Capital" value={fmt(investable)} sub={`After ${(cashReserve/1000).toFixed(0)}K cash reserve`} big />
-          <StatCard label="Yr 1 Gross Return" value={fmt(annualInvestReturn)} sub={`Bonds + Equity gains`} color="#34d399" big />
-          <StatCard label="Net Cash Flow Yr 1" value={fmt(netCashflow)} sub={`Return + Rent − Spend`} color={netCashflow >= 0 ? "#34d399" : "#f87171"} big />
-          <StatCard label="Portfolio @ 5 Yrs" value={fmt(yr5?.total)} sub={`Age ${yr5?.age}`} big />
-          <StatCard label="Portfolio @ 20 Yrs" value={fmt(yr20?.total)} sub={`Age ${yr20?.age} · Inflation adj.`} big />
+          <StatCard label="Investable Capital" value={fmt(investable)} sub={`After ${(cashReserve / 1000).toFixed(0)}K cash reserve`} big />
+          <StatCard label="Yr 1 Gross Return" value={fmt(annualInvestReturn)} sub="Bonds + Equity gains" color="#34d399" big />
+          <StatCard label="Net Cash Flow Yr 1" value={fmt(netCashflow)} sub="Return + Rent − Spend" color={netCashflow >= 0 ? "#34d399" : "#f87171"} big />
+          <StatCard label="Portfolio @ 5 Yrs" value={fmt(yr5?.total ?? 0)} sub={`Age ${yr5?.age ?? ""}`} big />
+          <StatCard label="Portfolio @ 20 Yrs" value={fmt(yr20?.total ?? 0)} sub={`Age ${yr20?.age ?? ""} · Inflation adj.`} big />
         </div>
 
         {/* Main Layout */}
@@ -264,9 +276,8 @@ export default function RetirementPlanner() {
 
           {/* Charts & Tables */}
           <div>
-            {/* Tabs */}
             <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
-              {["overview", "income", "table"].map((t) => (
+              {(["overview", "income", "table"] as const).map((t) => (
                 <button key={t} style={tabStyle(t)} onClick={() => setTab(t)}>
                   {t === "overview" ? "📈 Portfolio Growth" : t === "income" ? "💵 Income vs Spend" : "📋 Year-by-Year"}
                 </button>
@@ -294,7 +305,7 @@ export default function RetirementPlanner() {
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
                     <XAxis dataKey="age" stroke="#334155" tick={{ fill: "#475569", fontSize: 11, fontFamily: "DM Mono" }} label={{ value: "Age", position: "insideBottom", offset: -2, fill: "#475569", fontSize: 11 }} />
-                    <YAxis stroke="#334155" tick={{ fill: "#475569", fontSize: 11, fontFamily: "DM Mono" }} tickFormatter={(v) => fmt(v)} />
+                    <YAxis stroke="#334155" tick={{ fill: "#475569", fontSize: 11, fontFamily: "DM Mono" }} tickFormatter={(v: number) => fmt(v)} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend wrapperStyle={{ fontSize: 11, fontFamily: "DM Mono", color: "#94a3b8" }} />
                     <Area type="monotone" dataKey="equity" name="Equity" stackId="1" stroke="#34d399" fill="url(#gEq)" strokeWidth={2} />
@@ -303,9 +314,8 @@ export default function RetirementPlanner() {
                   </AreaChart>
                 </ResponsiveContainer>
 
-                {/* Scenario summary boxes */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 20 }}>
-                  {[5, 10, 20].map((y) => {
+                  {([5, 10, 20] as const).map((y) => {
                     const d = projection[y];
                     if (!d) return null;
                     const grew = d.total > principal;
@@ -320,7 +330,6 @@ export default function RetirementPlanner() {
                   })}
                 </div>
 
-                {/* 4% Rule context */}
                 <div style={{ marginTop: 20, padding: "14px 18px", background: "rgba(240,192,64,0.06)", border: "1px solid rgba(240,192,64,0.2)", borderRadius: 10 }}>
                   <div style={{ fontSize: 11, color: "#f0c040", fontFamily: "DM Mono", marginBottom: 6 }}>💡 USA Context: The 4% Rule</div>
                   <div style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.7 }}>
@@ -339,7 +348,7 @@ export default function RetirementPlanner() {
                   <LineChart data={projection} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
                     <XAxis dataKey="age" stroke="#334155" tick={{ fill: "#475569", fontSize: 11, fontFamily: "DM Mono" }} />
-                    <YAxis stroke="#334155" tick={{ fill: "#475569", fontSize: 11, fontFamily: "DM Mono" }} tickFormatter={(v) => fmt(v)} />
+                    <YAxis stroke="#334155" tick={{ fill: "#475569", fontSize: 11, fontFamily: "DM Mono" }} tickFormatter={(v: number) => fmt(v)} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend wrapperStyle={{ fontSize: 11, fontFamily: "DM Mono" }} />
                     <Line type="monotone" dataKey="spend" name="Total Spending" stroke="#f87171" strokeWidth={2} dot={false} />
@@ -353,12 +362,14 @@ export default function RetirementPlanner() {
                 <div style={{ marginTop: 20, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                   <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: 10, padding: "14px 16px" }}>
                     <div style={{ fontSize: 11, color: "#64748b", fontFamily: "DM Mono", marginBottom: 8, textTransform: "uppercase" }}>Year 1 Income Breakdown</div>
-                    {[
-                      ["Bond Gains", fmt(bondAmt * bondReturn / 100), "#60a5fa"],
-                      ["Equity Gains", fmt(equityAmt * equityReturn / 100), "#34d399"],
-                      ["Rental Income", fmt(rentalIncome), "#f0c040"],
-                      ["Social Security", retireAge >= socialSecurityAge ? fmt(socialSecurityAmt) : "Not yet", "#a78bfa"],
-                    ].map(([l, v, c]) => (
+                    {(
+                      [
+                        ["Bond Gains", fmt(bondAmt * bondReturn / 100), "#60a5fa"],
+                        ["Equity Gains", fmt(equityAmt * equityReturn / 100), "#34d399"],
+                        ["Rental Income", fmt(rentalIncome), "#f0c040"],
+                        ["Social Security", retireAge >= socialSecurityAge ? fmt(socialSecurityAmt) : "Not yet", "#a78bfa"],
+                      ] as [string, string, string][]
+                    ).map(([l, v, c]) => (
                       <div key={l} style={{ display: "flex", justifyContent: "space-between", marginBottom: 6, fontSize: 13 }}>
                         <span style={{ color: "#94a3b8" }}>{l}</span>
                         <span style={{ color: c, fontFamily: "DM Mono", fontWeight: 700 }}>{v}</span>
@@ -371,11 +382,13 @@ export default function RetirementPlanner() {
                   </div>
                   <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: 10, padding: "14px 16px" }}>
                     <div style={{ fontSize: 11, color: "#64748b", fontFamily: "DM Mono", marginBottom: 8, textTransform: "uppercase" }}>Cost Structure</div>
-                    {[
-                      ["Fixed Costs", fmt(fixedCosts), "#94a3b8"],
-                      ["Property Tax (incl.)", fmt(propertyTax), "#64748b"],
-                      ["Variable / Lifestyle", fmt(Math.max(0, annualSpend - fixedCosts)), "#f0c040"],
-                    ].map(([l, v, c]) => (
+                    {(
+                      [
+                        ["Fixed Costs", fmt(fixedCosts), "#94a3b8"],
+                        ["Property Tax (incl.)", fmt(propertyTax), "#64748b"],
+                        ["Variable / Lifestyle", fmt(Math.max(0, annualSpend - fixedCosts)), "#f0c040"],
+                      ] as [string, string, string][]
+                    ).map(([l, v, c]) => (
                       <div key={l} style={{ display: "flex", justifyContent: "space-between", marginBottom: 6, fontSize: 13 }}>
                         <span style={{ color: "#94a3b8" }}>{l}</span>
                         <span style={{ color: c, fontFamily: "DM Mono", fontWeight: 700 }}>{v}</span>
@@ -426,7 +439,6 @@ export default function RetirementPlanner() {
               </div>
             )}
 
-            {/* Bottom insights */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 16 }}>
               <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: 18 }}>
                 <div style={{ fontSize: 11, color: "#f0c040", fontFamily: "DM Mono", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>🇺🇸 USA Investment Vehicles</div>
