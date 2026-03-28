@@ -5,11 +5,14 @@
 ```
 retirement-planner/               ← pnpm workspace root
 ├── apps/
-│   └── web/                      ← Vite + React + TypeScript UI
-│       └── src/
-│           ├── components/       ← React components (RetirementPlanner.tsx, etc.)
-│           ├── App.tsx
-│           └── main.tsx
+│   ├── web/                      ← Vite + React + TypeScript UI
+│   │   └── src/
+│   │       ├── components/       ← React components (RetirementPlanner.tsx, etc.)
+│   │       ├── App.tsx
+│   │       └── main.tsx
+│   └── ios/                      ← SwiftUI iOS app (Xcode project)
+│       ├── RetirementPlanner/
+│       └── RetirementPlanner.xcodeproj/
 ├── packages/
 │   └── core/                     ← Pure TS financial logic (@retirement/core)
 │       └── src/
@@ -39,6 +42,7 @@ pnpm --filter @retirement/web  <cmd>
 ## Core principles
 
 - **packages/core contains zero React** — only pure TypeScript functions and types.
+- **apps/ios** is Swift/SwiftUI only; financial behavior should mirror `packages/core` (ported Swift, not embedded JS).
 - **Financial logic belongs in packages/core**, never inside a component.
 - Components import from `@retirement/core`; never import relative paths that cross package boundaries.
 - All monetary values inside core are plain `number` (dollars). Formatting happens in the UI layer only.
