@@ -1,0 +1,78 @@
+{
+  "inflation": {
+    "factorBasic": { "inflationRate": 0.03, "years": 10, "expected": 1.343916379344122 },
+    "toNominalBasic": { "realValue": 1000.0, "inflationRate": 0.03, "years": 10.0, "expected": 1343.916379344122 },
+    "toRealBasic": { "nominalValue": 1343.916379344122, "inflationRate": 0.03, "years": 10.0, "expectedReal": 1000.0 },
+    "realReturnBasic": { "nominalRate": 0.07, "inflationRate": 0.03, "expected": 0.038834951456311 },
+    "adjustedContributionBasic": { "baseContribution": 1000.0, "inflationRate": 0.03, "yearsElapsed": 5.0, "expected": 1159.2740743 }
+  },
+  "fourPercent": {
+    "safeWithdrawalDefault": { "portfolioValue": 500000.0, "expectedAnnual": 20000.0, "expectedMonthly": 1666.6666666666667 },
+    "safeWithdrawalCustom": { "portfolioValue": 500000.0, "withdrawalRate": 0.03, "expectedAnnual": 15000.0, "expectedMonthly": 1250.0 },
+    "fireNumberDefault": { "annualExpenses": 80000.0, "expectedPortfolio": 2000000.0 },
+    "fireProgressPartial": { "currentPortfolio": 250000.0, "targetPortfolio": 1000000.0, "expected": 0.25 },
+    "fireProgressClamped": { "currentPortfolio": 1200000.0, "targetPortfolio": 1000000.0, "expected": 1.0 },
+    "yearsOfExpensesNormal": { "portfolioValue": 500000.0, "annualExpenses": 40000.0, "expected": 12.5 },
+    "yearsOfExpensesZero": { "portfolioValue": 500000.0, "annualExpenses": 0.0, "expected": "Infinity" }
+  },
+  "projectionAdjusted": {
+    "input": {
+      "currentPortfolio": 50000.0,
+      "annualContribution": 6000.0,
+      "annualReturnRate": 0.07,
+      "inflationRate": 0.03,
+      "currentAge": 30,
+      "retirementAge": 32,
+      "inflationAdjustContributions": true,
+      "startYear": 2026
+    },
+    "snapshots": [
+      {
+        "year": 2027, "age": 31,
+        "portfolioNominal": 59920.0,
+        "portfolioReal": 58174.757282,
+        "annualContribution": 6000.0,
+        "investmentGains": 3920.0
+      },
+      {
+        "year": 2028, "age": 32,
+        "portfolioNominal": 70727.0,
+        "portfolioReal": 66666.980865,
+        "annualContribution": 6180.0,
+        "investmentGains": 4627.0
+      }
+    ],
+    "totalContributions": 12180.0,
+    "totalGains": 8547.0
+  },
+  "projectionFlat": {
+    "input": {
+      "currentPortfolio": 50000.0,
+      "annualContribution": 6000.0,
+      "annualReturnRate": 0.07,
+      "inflationRate": 0.03,
+      "currentAge": 30,
+      "retirementAge": 32,
+      "inflationAdjustContributions": false,
+      "startYear": 2026
+    },
+    "snapshots": [
+      {
+        "year": 2027, "age": 31,
+        "portfolioNominal": 59920.0,
+        "portfolioReal": 58174.757282,
+        "annualContribution": 6000.0,
+        "investmentGains": 3920.0
+      },
+      {
+        "year": 2028, "age": 32,
+        "portfolioNominal": 70534.4,
+        "portfolioReal": 66485.436893,
+        "annualContribution": 6000.0,
+        "investmentGains": 4614.4
+      }
+    ],
+    "totalContributions": 12000.0,
+    "totalGains": 8534.4
+  }
+}
