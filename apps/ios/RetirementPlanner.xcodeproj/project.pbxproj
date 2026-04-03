@@ -14,12 +14,14 @@
 		CC0000000000000000000007 /* Inflation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0000000000000000000003 /* Inflation.swift */; };
 		CC0000000000000000000008 /* FourPercent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0000000000000000000004 /* FourPercent.swift */; };
 		CC0000000000000000000009 /* Projection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0000000000000000000005 /* Projection.swift */; };
+		CC0000000000000000000011 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0000000000000000000010 /* Bucket.swift */; };
 		DD0000000000000000000010 /* RetirementPlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000002 /* RetirementPlannerTests.swift */; };
 		DD0000000000000000000011 /* FixtureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000003 /* FixtureLoader.swift */; };
 		DD0000000000000000000012 /* InflationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000004 /* InflationTests.swift */; };
 		DD0000000000000000000013 /* FourPercentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000005 /* FourPercentTests.swift */; };
 		DD0000000000000000000014 /* ProjectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000006 /* ProjectionTests.swift */; };
 		DD0000000000000000000015 /* core-fixtures.json in Resources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000007 /* core-fixtures.json */; };
+		DD0000000000000000000017 /* BucketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000016 /* BucketTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,11 +43,13 @@
 		CC0000000000000000000003 /* Inflation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inflation.swift; sourceTree = "<group>"; };
 		CC0000000000000000000004 /* FourPercent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourPercent.swift; sourceTree = "<group>"; };
 		CC0000000000000000000005 /* Projection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Projection.swift; sourceTree = "<group>"; };
+		CC0000000000000000000010 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
 		DD0000000000000000000002 /* RetirementPlannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetirementPlannerTests.swift; sourceTree = "<group>"; };
 		DD0000000000000000000003 /* FixtureLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixtureLoader.swift; sourceTree = "<group>"; };
 		DD0000000000000000000004 /* InflationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InflationTests.swift; sourceTree = "<group>"; };
 		DD0000000000000000000005 /* FourPercentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourPercentTests.swift; sourceTree = "<group>"; };
 		DD0000000000000000000006 /* ProjectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectionTests.swift; sourceTree = "<group>"; };
+		DD0000000000000000000016 /* BucketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketTests.swift; sourceTree = "<group>"; };
 		DD0000000000000000000007 /* core-fixtures.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "core-fixtures.json"; path = "../../tests/fixtures/core-fixtures.json"; sourceTree = SOURCE_ROOT; };
 		DD0000000000000000000050 /* RetirementPlannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RetirementPlannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -104,6 +108,7 @@
 				CC0000000000000000000003 /* Inflation.swift */,
 				CC0000000000000000000004 /* FourPercent.swift */,
 				CC0000000000000000000005 /* Projection.swift */,
+				CC0000000000000000000010 /* Bucket.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -116,6 +121,7 @@
 				DD0000000000000000000004 /* InflationTests.swift */,
 				DD0000000000000000000005 /* FourPercentTests.swift */,
 				DD0000000000000000000006 /* ProjectionTests.swift */,
+				DD0000000000000000000016 /* BucketTests.swift */,
 				DD0000000000000000000007 /* core-fixtures.json */,
 			);
 			path = RetirementPlannerTests;
@@ -227,6 +233,7 @@
 				CC0000000000000000000007 /* Inflation.swift in Sources */,
 				CC0000000000000000000008 /* FourPercent.swift in Sources */,
 				CC0000000000000000000009 /* Projection.swift in Sources */,
+				CC0000000000000000000011 /* Bucket.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +246,7 @@
 				DD0000000000000000000012 /* InflationTests.swift in Sources */,
 				DD0000000000000000000013 /* FourPercentTests.swift in Sources */,
 				DD0000000000000000000014 /* ProjectionTests.swift in Sources */,
+				DD0000000000000000000017 /* BucketTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
