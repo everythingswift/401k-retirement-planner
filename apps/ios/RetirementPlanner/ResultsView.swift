@@ -318,8 +318,6 @@ private struct IncomeVsSpendView: View {
 private struct YearByYearView: View {
     let store: RetirementStore
 
-    private let columns = ["Yr", "Age", "Bonds", "Equity", "Cash", "Total", "Spend"]
-
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Green rows = cash refill from bonds + equity")
@@ -331,7 +329,6 @@ private struct YearByYearView: View {
 
             // Header
             HStack(spacing: 0) {
-                tableCell("Yr",     width: 36, header: true)
                 tableCell("Age",    width: 44, header: true)
                 tableCell("Bonds",  width: 70, header: true)
                 tableCell("Equity", width: 70, header: true)
@@ -348,16 +345,10 @@ private struct YearByYearView: View {
                 let isGood   = s.total >= store.totalPortfolio
 
                 HStack(spacing: 0) {
-                    Text("\(s.yr + 1)")
-                        .font(.system(.caption, design: .monospaced))
-                        .foregroundStyle(isRefill ? Color.green : .secondary)
-                        .fontWeight(isRefill ? .bold : .regular)
-                        .frame(width: 36, alignment: .trailing)
-
                     Text("\(s.age)")
                         .font(.system(.caption, design: .monospaced))
-                        .foregroundStyle(.white)
-                        .fontWeight(.semibold)
+                        .foregroundStyle(isRefill ? Color.green : .white)
+                        .fontWeight(isRefill ? .bold : .semibold)
                         .frame(width: 44, alignment: .trailing)
 
                     Text(fmtCurrency(s.bonds))
