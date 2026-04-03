@@ -1,19 +1,21 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var store = RetirementStore()
+    @AppStorage("disclaimerSeen") private var disclaimerSeen = false
+
     var body: some View {
         NavigationStack {
-            VStack(spacing: 16) {
-                Text("Retirement Planner")
-                    .font(.title2.weight(.semibold))
-                Text("SwiftUI shell — connect inputs and charts to ported core logic next.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
+            ConfigurationView(store: store)
+        }
+        .preferredColorScheme(.dark)
+        .fullScreenCover(isPresented: Binding(
+            get: { !disclaimerSeen },
+            set: { _ in }
+        )) {
+            DisclaimerView {
+                disclaimerSeen = true
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .navigationTitle("401(k)")
         }
     }
 }

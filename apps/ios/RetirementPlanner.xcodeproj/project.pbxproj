@@ -15,6 +15,11 @@
 		CC0000000000000000000008 /* FourPercent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0000000000000000000004 /* FourPercent.swift */; };
 		CC0000000000000000000009 /* Projection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0000000000000000000005 /* Projection.swift */; };
 		CC0000000000000000000011 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0000000000000000000010 /* Bucket.swift */; };
+		AA00000000000000000002 /* RetirementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000000001 /* RetirementStore.swift */; };
+		AA00000000000000000004 /* DisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000000003 /* DisclaimerView.swift */; };
+		AA00000000000000000006 /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000000005 /* ConfigurationView.swift */; };
+		AA00000000000000000008 /* EditValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000000007 /* EditValueView.swift */; };
+		AA0000000000000000000A /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000000009 /* ResultsView.swift */; };
 		DD0000000000000000000010 /* RetirementPlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000002 /* RetirementPlannerTests.swift */; };
 		DD0000000000000000000011 /* FixtureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000003 /* FixtureLoader.swift */; };
 		DD0000000000000000000012 /* InflationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000004 /* InflationTests.swift */; };
@@ -44,6 +49,11 @@
 		CC0000000000000000000004 /* FourPercent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourPercent.swift; sourceTree = "<group>"; };
 		CC0000000000000000000005 /* Projection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Projection.swift; sourceTree = "<group>"; };
 		CC0000000000000000000010 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
+		AA00000000000000000001 /* RetirementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetirementStore.swift; sourceTree = "<group>"; };
+		AA00000000000000000003 /* DisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerView.swift; sourceTree = "<group>"; };
+		AA00000000000000000005 /* ConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationView.swift; sourceTree = "<group>"; };
+		AA00000000000000000007 /* EditValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditValueView.swift; sourceTree = "<group>"; };
+		AA00000000000000000009 /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
 		DD0000000000000000000002 /* RetirementPlannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetirementPlannerTests.swift; sourceTree = "<group>"; };
 		DD0000000000000000000003 /* FixtureLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixtureLoader.swift; sourceTree = "<group>"; };
 		DD0000000000000000000004 /* InflationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InflationTests.swift; sourceTree = "<group>"; };
@@ -88,6 +98,11 @@
 				A1B2C3D4E5F6789012345677 /* RetirementPlannerApp.swift */,
 				A1B2C3D4E5F6789012345678 /* ContentView.swift */,
 				A1B2C3D4E5F6789012345679 /* Assets.xcassets */,
+				AA00000000000000000001 /* RetirementStore.swift */,
+				AA00000000000000000003 /* DisclaimerView.swift */,
+				AA00000000000000000005 /* ConfigurationView.swift */,
+				AA00000000000000000007 /* EditValueView.swift */,
+				AA00000000000000000009 /* ResultsView.swift */,
 			);
 			path = RetirementPlanner;
 			sourceTree = "<group>";
@@ -234,6 +249,11 @@
 				CC0000000000000000000008 /* FourPercent.swift in Sources */,
 				CC0000000000000000000009 /* Projection.swift in Sources */,
 				CC0000000000000000000011 /* Bucket.swift in Sources */,
+				AA00000000000000000002 /* RetirementStore.swift in Sources */,
+				AA00000000000000000004 /* DisclaimerView.swift in Sources */,
+				AA00000000000000000006 /* ConfigurationView.swift in Sources */,
+				AA00000000000000000008 /* EditValueView.swift in Sources */,
+				AA0000000000000000000A /* ResultsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
