@@ -126,6 +126,7 @@ private struct PortfolioGrowthView: View {
                     .foregroundStyle(Color.gold)
                 }
             }
+            .chartXScale(domain: store.retireAge...99)
             .chartXAxis {
                 AxisMarks(values: .stride(by: 5)) {
                     AxisValueLabel().foregroundStyle(Color.secondary)
@@ -150,9 +151,9 @@ private struct PortfolioGrowthView: View {
 
             // MARK: Milestone cards
             HStack(spacing: 10) {
-                ForEach([5, 20, store.snapshotAt20.map { _ in store.snapshots.count - 1 } ?? 0], id: \.self) { idx in
-                    if let s = store.snapshots.count > idx ? store.snapshots[idx] : nil {
-                        milestoneCard(snapshot: s)
+                ForEach([5, 20, store.snapshots.count - 1], id: \.self) { idx in
+                    if idx >= 0, idx < store.snapshots.count {
+                        milestoneCard(snapshot: store.snapshots[idx])
                     }
                 }
             }
@@ -166,7 +167,7 @@ private struct PortfolioGrowthView: View {
     private func milestoneCard(snapshot: BucketSnapshot) -> some View {
         let grew = snapshot.total >= store.totalPortfolio
         VStack(alignment: .leading, spacing: 4) {
-            Text("Yr \(snapshot.yr + 1) · Age \(snapshot.age)")
+            Text("Age \(snapshot.age)")
                 .font(.system(size: 9, design: .monospaced))
                 .foregroundStyle(.secondary)
                 .kerning(0.3)
@@ -247,6 +248,7 @@ private struct IncomeVsSpendView: View {
                         }
                 }
             }
+            .chartXScale(domain: store.retireAge...99)
             .chartXAxis {
                 AxisMarks(values: .stride(by: 5)) {
                     AxisValueLabel().foregroundStyle(Color.secondary)
