@@ -88,7 +88,7 @@ https://everythingswift.github.io/401k-retirement-planner/
 ## Privacy Policy URL (required)
 
 ```
-https://everythingswift.github.io/401k-retirement-planner/privacy-policy.html
+https://everythingswift.github.io/401k-retirement-planner/docs/privacy-policy.html
 ```
 
 ---

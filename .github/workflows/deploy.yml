@@ -41,6 +41,9 @@ jobs:
         env:
           NODE_ENV: production
 
+      - name: Copy docs into dist
+        run: cp -r docs/. apps/web/dist/docs/
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
