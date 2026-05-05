@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ConfigurationView: View {
     @Bindable var store: RetirementStore
+    @State private var showingSavedPlans = false
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -214,6 +215,20 @@ struct ConfigurationView: View {
         .navigationTitle("Retirement Planner")
         .navigationBarTitleDisplayMode(.large)
         .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    showingSavedPlans = true
+                } label: {
+                    Image(systemName: "folder")
+                        .foregroundStyle(Color.gold)
+                }
+                .accessibilityLabel("Saved plans")
+            }
+        }
+        .sheet(isPresented: $showingSavedPlans) {
+            SavedPlansView(store: store)
+        }
     }
 
     // MARK: - Helpers

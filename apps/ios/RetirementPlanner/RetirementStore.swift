@@ -53,6 +53,22 @@ final class RetirementStore {
     var snapshotAt5: BucketSnapshot? { snapshots.count > 5 ? snapshots[5] : snapshots.last }
     var snapshotAt20: BucketSnapshot? { snapshots.count > 20 ? snapshots[20] : snapshots.last }
     var finalPortfolio: Double { snapshots.last?.total ?? 0 }
+
+    // MARK: - Saved plans
+
+    /// Replaces all 10 input fields with the values from `plan`.
+    func apply(_ plan: SavedPlan) {
+        retireAge = plan.retireAge
+        totalPortfolio = plan.totalPortfolio
+        annualSpend = plan.annualSpend
+        rentalIncome = plan.rentalIncome
+        socialSecurityAge = plan.socialSecurityAge
+        socialSecurityAmt = plan.socialSecurityAmt
+        bondAllocation = plan.bondAllocation
+        bondReturn = plan.bondReturn
+        equityReturn = plan.equityReturn
+        inflationRate = plan.inflationRate
+    }
 }
 
 // MARK: - Formatting helpers

@@ -27,6 +27,11 @@
 		DD0000000000000000000014 /* ProjectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000006 /* ProjectionTests.swift */; };
 		DD0000000000000000000015 /* core-fixtures.json in Resources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000007 /* core-fixtures.json */; };
 		DD0000000000000000000017 /* BucketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000016 /* BucketTests.swift */; };
+		EE0000000000000000000012 /* SavedPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0000000000000000000002 /* SavedPlan.swift */; };
+		EE0000000000000000000013 /* PlanStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0000000000000000000003 /* PlanStore.swift */; };
+		EE0000000000000000000014 /* SavedPlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0000000000000000000004 /* SavedPlansView.swift */; };
+		DD0000000000000000000025 /* PlanStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000023 /* PlanStoreTests.swift */; };
+		DD0000000000000000000026 /* SavedPlanCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0000000000000000000024 /* SavedPlanCodableTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +67,11 @@
 		DD0000000000000000000016 /* BucketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketTests.swift; sourceTree = "<group>"; };
 		DD0000000000000000000007 /* core-fixtures.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "core-fixtures.json"; path = "../../tests/fixtures/core-fixtures.json"; sourceTree = SOURCE_ROOT; };
 		DD0000000000000000000050 /* RetirementPlannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RetirementPlannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE0000000000000000000002 /* SavedPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPlan.swift; sourceTree = "<group>"; };
+		EE0000000000000000000003 /* PlanStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanStore.swift; sourceTree = "<group>"; };
+		EE0000000000000000000004 /* SavedPlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPlansView.swift; sourceTree = "<group>"; };
+		DD0000000000000000000023 /* PlanStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanStoreTests.swift; sourceTree = "<group>"; };
+		DD0000000000000000000024 /* SavedPlanCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPlanCodableTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				CC0000000000000000000001 /* Core */,
+				EE0000000000000000000001 /* Plans */,
 				A1B2C3D4E5F6789012345677 /* RetirementPlannerApp.swift */,
 				A1B2C3D4E5F6789012345678 /* ContentView.swift */,
 				A1B2C3D4E5F6789012345679 /* Assets.xcassets */,
@@ -105,6 +116,16 @@
 				AA00000000000000000009 /* ResultsView.swift */,
 			);
 			path = RetirementPlanner;
+			sourceTree = "<group>";
+		};
+		EE0000000000000000000001 /* Plans */ = {
+			isa = PBXGroup;
+			children = (
+				EE0000000000000000000002 /* SavedPlan.swift */,
+				EE0000000000000000000003 /* PlanStore.swift */,
+				EE0000000000000000000004 /* SavedPlansView.swift */,
+			);
+			path = Plans;
 			sourceTree = "<group>";
 		};
 		A1B2C3D4E5F6789012345675 /* Products */ = {
@@ -137,6 +158,8 @@
 				DD0000000000000000000005 /* FourPercentTests.swift */,
 				DD0000000000000000000006 /* ProjectionTests.swift */,
 				DD0000000000000000000016 /* BucketTests.swift */,
+				DD0000000000000000000023 /* PlanStoreTests.swift */,
+				DD0000000000000000000024 /* SavedPlanCodableTests.swift */,
 				DD0000000000000000000007 /* core-fixtures.json */,
 			);
 			path = RetirementPlannerTests;
@@ -254,6 +277,9 @@
 				AA00000000000000000006 /* ConfigurationView.swift in Sources */,
 				AA00000000000000000008 /* EditValueView.swift in Sources */,
 				AA0000000000000000000A /* ResultsView.swift in Sources */,
+				EE0000000000000000000012 /* SavedPlan.swift in Sources */,
+				EE0000000000000000000013 /* PlanStore.swift in Sources */,
+				EE0000000000000000000014 /* SavedPlansView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +293,8 @@
 				DD0000000000000000000013 /* FourPercentTests.swift in Sources */,
 				DD0000000000000000000014 /* ProjectionTests.swift in Sources */,
 				DD0000000000000000000017 /* BucketTests.swift in Sources */,
+				DD0000000000000000000025 /* PlanStoreTests.swift in Sources */,
+				DD0000000000000000000026 /* SavedPlanCodableTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

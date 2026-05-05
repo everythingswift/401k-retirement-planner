@@ -3,7 +3,12 @@ import Charts
 
 struct ResultsView: View {
     let store: RetirementStore
+    @Environment(PlanStore.self) private var planStore
+    @AppStorage("savePrivacyNoticeSeen") private var privacyNoticeSeen = false
+
     @State private var selectedTab: ResultTab = .growth
+    @State private var showingPrivacyAlert = false
+    @State private var showingSavedToast = false
 
     enum ResultTab: String, CaseIterable {
         case growth  = "Growth"
@@ -59,6 +64,77 @@ struct ResultsView: View {
         .navigationTitle("Results")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    handleSaveTap()
+                } label: {
+                    Image(systemName: "square.and.arrow.down")
+                        .foregroundStyle(Color.gold)
+                }
+                .accessibilityLabel("Save plan")
+            }
+        }
+        .alert("Saved Plans Stay on This Device", isPresented: $showingPrivacyAlert) {
+            Button("Save Plan") {
+                privacyNoticeSeen = true
+                performSave()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Plans are saved on this device only. They're not synced or backed up. If you uninstall RetireWise, your saved plans are deleted.")
+        }
+        .overlay(alignment: .top) {
+            if showingSavedToast {
+                savedToast
+                    .padding(.top, 8)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            }
+        }
+    }
+
+    // MARK: - Save flow
+
+    private func handleSaveTap() {
+        if privacyNoticeSeen {
+            performSave()
+        } else {
+            showingPrivacyAlert = true
+        }
+    }
+
+    private func performSave() {
+        let name = PlanStore.defaultName()
+        let plan = SavedPlan(capturing: store, name: name)
+        planStore.add(plan)
+
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+
+        withAnimation(.easeInOut(duration: 0.2)) {
+            showingSavedToast = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            withAnimation(.easeInOut(duration: 0.25)) {
+                showingSavedToast = false
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var savedToast: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "checkmark.circle.fill")
+                .foregroundStyle(.green)
+            Text("Saved")
+                .font(.system(.callout, design: .monospaced))
+                .fontWeight(.semibold)
+                .foregroundStyle(.white)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .background(Color.white.opacity(0.12))
+        .clipShape(Capsule())
+        .overlay(Capsule().strokeBorder(Color.white.opacity(0.15), lineWidth: 1))
     }
 
     @ViewBuilder
