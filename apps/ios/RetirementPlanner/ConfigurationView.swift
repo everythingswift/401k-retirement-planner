@@ -220,7 +220,7 @@ struct ConfigurationView: View {
                 Button {
                     showingSavedPlans = true
                 } label: {
-                    Image(systemName: "folder")
+                    Image(systemName: "list.bullet.rectangle")
                         .foregroundStyle(Color.gold)
                 }
                 .accessibilityLabel("Saved plans")

@@ -69,7 +69,8 @@ struct ResultsView: View {
                 Button {
                     handleSaveTap()
                 } label: {
-                    Image(systemName: "square.and.arrow.down")
+                    Text("Save")
+                        .font(.system(.body, design: .monospaced))
                         .foregroundStyle(Color.gold)
                 }
                 .accessibilityLabel("Save plan")
