@@ -13,8 +13,7 @@ build/
 .env.local
 .env.*.local
 
-# Secrets & local-only release artifacts
-appstore_assets/
+# Secrets
 *.key
 
 # Editor
