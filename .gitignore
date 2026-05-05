@@ -13,6 +13,10 @@ build/
 .env.local
 .env.*.local
 
+# Secrets & local-only release artifacts
+appstore_assets/
+*.key
+
 # Editor
 .vscode/
 .idea/
